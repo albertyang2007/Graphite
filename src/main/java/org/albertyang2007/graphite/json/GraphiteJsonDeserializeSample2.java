@@ -62,7 +62,7 @@ public class GraphiteJsonDeserializeSample2 {
         try {
             ObjectMapper OBJECT_MAPPER = new ObjectMapper();
             List<GraphiteJsonDeserializeSample2> vos = OBJECT_MAPPER.readValue(json,
-                    new TypeReference<List<GraphiteJsonDeserializeSample2>>() {
+                    new TypeReference<List<GraphiteJsonDeserializeSample2>>() {/**/
                     });
 
             for (GraphiteJsonDeserializeSample2 avo : vos)
