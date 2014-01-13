@@ -14,11 +14,10 @@ import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
 import com.sun.jersey.api.json.JSONConfiguration;
-
-//refer to: 
-//https://jersey.java.net/documentation/latest/user-guide.html
-//http://examples.javacodegeeks.com/enterprise-java/rest/jersey/json-example-with-jersey-jackson/
-public class GraphiteJsonClient {
+/*
+ * Using Jersey Client
+ */
+public class GraphiteJsonClient1 {
     public String getJsonDataFromWeb() {
         String output = "[]";
         try {
@@ -72,7 +71,7 @@ public class GraphiteJsonClient {
     }
 
     public static void main(String[] args) {
-        GraphiteJsonClient ins = new GraphiteJsonClient();
+        GraphiteJsonClient1 ins = new GraphiteJsonClient1();
         String jsonStr = ins.getJsonDataFromWeb();
         ins.deserializeJsonOutput(jsonStr);
     }
