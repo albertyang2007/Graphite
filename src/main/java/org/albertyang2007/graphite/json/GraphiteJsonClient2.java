@@ -30,7 +30,7 @@ public class GraphiteJsonClient2 {
             
             restTemplate.getMessageConverters().add(converter);
 
-            String serverUrl = "http://localhost:8080/render?from=-30minute&target=summarize(system.loadavg_1min,'30minute')&format=json&noCache=true";
+            String serverUrl = "http://192.168.1.131:9090/render?from=-30minute&target=summarize(system.loadavg_1min,'30minute')&format=json&noCache=true";
 
             output = restTemplate.getForObject(serverUrl, String.class);
 

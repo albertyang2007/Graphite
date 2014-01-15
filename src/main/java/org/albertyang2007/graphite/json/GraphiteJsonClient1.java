@@ -29,7 +29,7 @@ public class GraphiteJsonClient1 {
             Client client = Client.create(clientConfig);
 
             WebResource webResource = client
-                    .resource("http://localhost:8080/render?from=-30minute&target=summarize(system.loadavg_1min,'30minute')&format=json&noCache=true");
+                    .resource("http://192.168.1.131:9090/render?from=-30minute&target=summarize(system.loadavg_1min,'30minute')&format=json&noCache=true");
 
             ClientResponse response = webResource.accept("application/json").type("application/json")
                     .post(ClientResponse.class, new String());
