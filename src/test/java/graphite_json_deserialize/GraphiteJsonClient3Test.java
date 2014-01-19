@@ -16,7 +16,9 @@ import org.albertyang2007.graphite.json.GraphiteJsonDeserializeSample2;
 import org.apache.cxf.jaxrs.client.WebClient;
 import org.apache.http.client.fluent.Content;
 import org.apache.http.client.fluent.Request;
+import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.jaxrs.JacksonJsonProvider;
+import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
 import org.junit.Test;
@@ -45,22 +47,7 @@ public class GraphiteJsonClient3Test {
 				Content content = Request.Get("http://localhost:9090")
 						.execute().returnContent();
 				assertThat(content.asString(), is(json));
-
-				ObjectMapper OBJECT_MAPPER = new ObjectMapper();
-				List<GraphiteJsonDeserializeSample2> vos = OBJECT_MAPPER.readValue(
-						content.asString(),
-						new TypeReference<List<GraphiteJsonDeserializeSample2>>() {/**/
-						});
-
-				assertThat(vos.size(), is(2));
-				assertThat(vos.get(0).getTarget(), is("system.loadavg.1min"));
-				assertThat(vos.get(1).getTarget(), is("system.loadavg.15min"));
-				assertThat(vos.get(0).getDatapoints().size(), is(2));
-				assertThat(vos.get(1).getDatapoints().size(), is(0));
-				assertThat(vos.get(0).getDatapoints().get(0).getValue(),
-						is("89"));
-				assertThat(vos.get(0).getDatapoints().get(0).getTimestamp(),
-						is("1389163650"));
+				deserializeAndAssertContext(content.asString());
 			}
 		});
 	}
@@ -95,24 +82,26 @@ public class GraphiteJsonClient3Test {
 				output = client.get(String.class);
 
 				assertThat(output, is(json));
-				
-				ObjectMapper OBJECT_MAPPER = new ObjectMapper();
-				List<GraphiteJsonDeserializeSample2> vos = OBJECT_MAPPER
-						.readValue(
-								output,
-								new TypeReference<List<GraphiteJsonDeserializeSample2>>() {/**/
-								});
-
-				assertThat(vos.size(), is(2));
-				assertThat(vos.get(0).getTarget(), is("system.loadavg.1min"));
-				assertThat(vos.get(1).getTarget(), is("system.loadavg.15min"));
-				assertThat(vos.get(0).getDatapoints().size(), is(2));
-				assertThat(vos.get(1).getDatapoints().size(), is(0));
-				assertThat(vos.get(0).getDatapoints().get(0).getValue(),
-						is("89"));
-				assertThat(vos.get(0).getDatapoints().get(0).getTimestamp(),
-						is("1389163650"));
+				deserializeAndAssertContext(output);
 			}
 		});
+	}
+
+	public void deserializeAndAssertContext(String output)
+			throws JsonParseException, JsonMappingException, IOException {
+		ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+		List<GraphiteJsonDeserializeSample2> vos = OBJECT_MAPPER.readValue(
+				output,
+				new TypeReference<List<GraphiteJsonDeserializeSample2>>() {/**/
+				});
+
+		assertThat(vos.size(), is(2));
+		assertThat(vos.get(0).getTarget(), is("system.loadavg.1min"));
+		assertThat(vos.get(1).getTarget(), is("system.loadavg.15min"));
+		assertThat(vos.get(0).getDatapoints().size(), is(2));
+		assertThat(vos.get(1).getDatapoints().size(), is(0));
+		assertThat(vos.get(0).getDatapoints().get(0).getValue(), is("89"));
+		assertThat(vos.get(0).getDatapoints().get(0).getTimestamp(),
+				is("1389163650"));
 	}
 }
