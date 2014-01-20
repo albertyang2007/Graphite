@@ -15,6 +15,10 @@ public class QueryParamBuilder {
         params.add(parm);
     }
 
+    public List<HashMap<String, String>> getParams() {
+        return this.params;
+    }
+
     public String getRenderURL() {
         StringBuffer buff = new StringBuffer();
         for (HashMap<String, String> mp : params) {

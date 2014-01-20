@@ -21,95 +21,89 @@ import org.codehaus.jackson.type.TypeReference;
  * http://stackoverflow.com/questions/11434991/how-to-write-a-rest-client-based-on-cxf-in-tomee
  */
 public class GraphiteJsonClient3 {
-	public String getJsonDataFromWeb() {
-		String output = "[]";
-		try {
-			String serverURL = "http://192.168.1.131:9090";
-			String path = "/render?from=-30minute&target=summarize(system.loadavg_1min,'30minute')&format=json&noCache=true";
+    public String getJsonDataFromWeb() {
+        String output = "[]";
+        try {
+            String serverURL = "http://10.178.255.114:8080";
+            String path = "/render?from=-30minute&target=summarize(system.loadavg_1min,'30minute')&format=json&noCache=true";
 
-			final ObjectMapper objectMapper = new ObjectMapper();
-			// objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS,
-			// false);
-			// objectMapper.configure(SerializationFeature.WRITE_DATE_KEYS_AS_TIMESTAMPS,
-			// false);
-			// objectMapper.configure(SerializationFeature.ORDER_MAP_ENTRIES_BY_KEYS,
-			// true);
-			// objectMapper.configure(SerializationFeature.WRITE_NULL_MAP_VALUES,
-			// false);
-			// objectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS,
-			// true);
-			// objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+            final ObjectMapper objectMapper = new ObjectMapper();
+            // objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS,
+            // false);
+            // objectMapper.configure(SerializationFeature.WRITE_DATE_KEYS_AS_TIMESTAMPS,
+            // false);
+            // objectMapper.configure(SerializationFeature.ORDER_MAP_ENTRIES_BY_KEYS,
+            // true);
+            // objectMapper.configure(SerializationFeature.WRITE_NULL_MAP_VALUES,
+            // false);
+            // objectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS,
+            // true);
+            // objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
 
-			List<JacksonJsonProvider> providerList = new ArrayList<JacksonJsonProvider>();
-			JacksonJsonProvider provider = new JacksonJsonProvider();
-			provider.addUntouchable(Response.class);
-			provider.setMapper(objectMapper);
+            List<JacksonJsonProvider> providerList = new ArrayList<JacksonJsonProvider>();
+            JacksonJsonProvider provider = new JacksonJsonProvider();
+            provider.addUntouchable(Response.class);
+            provider.setMapper(objectMapper);
 
-			providerList.add(provider);
+            providerList.add(provider);
 
-			WebClient client = WebClient.create(serverURL, providerList);
-			client.accept(MediaType.APPLICATION_JSON)
-					.type(MediaType.APPLICATION_JSON)
-					.path("render")
-					.query("format", "json")
-					.query("noCache", "true")
-					.query("from", "-30minute")
-					.query("target",
-							"summarize(system.loadavg_1min,'30minute')");
-			
-			System.out.println(client.getCurrentURI());
-			System.out.println("Server response .... \n");
+            WebClient client = WebClient.create(serverURL, providerList);
+            client.accept(MediaType.APPLICATION_JSON).type(MediaType.APPLICATION_JSON).path("render")
+                    .query("format", "json").query("noCache", "true").query("from", "-30minute")
+                    .query("target", "summarize(system.loadavg_1min,'30minute')");
 
-			//(1)
-			//Response response = client.get();
-			//if (response.getStatus() != 200) {
-			//	System.out.println("Failed : HTTP error code : "
-			//			+ response.getStatus());
-			//}
-			
-			//(2)
-			 output = client.get(String.class);
-			System.out.println(output);
+            System.out.println(client.getCurrentURI());
+            System.out.println("Server response .... \n");
 
-			//(3)
-			//List<GraphiteJsonDeserializeSample2> list = (List<GraphiteJsonDeserializeSample2>) client
-			//		.getCollection(GraphiteJsonDeserializeSample2.class);
-			//for (GraphiteJsonDeserializeSample2 dto : list) {
-			//	System.out.println(dto);
-			//}
+            //(1)
+            Response response = client.get();
+            if (response.getStatus() != 200) {
+                System.out.println("Failed : HTTP error code : " + response.getStatus());
+            } else {
+                //InputStream is = response.getEntity();
+            }
 
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return output;
-	}
+            //(2)
+            // output = client.get(String.class);
+            System.out.println(output);
 
-	public List<GraphiteJsonDeserializeSample2> deserializeJsonOutput(
-			String jsonStr) {
-		List<GraphiteJsonDeserializeSample2> vos = null;
-		try {
-			ObjectMapper mapper = new ObjectMapper();
-			vos = mapper.readValue(jsonStr,
-					new TypeReference<List<GraphiteJsonDeserializeSample2>>() {/**/
-					});
+            //(3)
+            //List<GraphiteJsonDeserializeSample2> list = (List<GraphiteJsonDeserializeSample2>) client
+            //		.getCollection(GraphiteJsonDeserializeSample2.class);
+            //for (GraphiteJsonDeserializeSample2 dto : list) {
+            //	System.out.println(dto);
+            //}
 
-			for (GraphiteJsonDeserializeSample2 avo : vos)
-				System.out.println(avo);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return output;
+    }
 
-		} catch (JsonParseException e) {
-			e.printStackTrace();
-		} catch (JsonMappingException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+    public List<GraphiteJsonDeserializeSample2> deserializeJsonOutput(String jsonStr) {
+        List<GraphiteJsonDeserializeSample2> vos = null;
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            vos = mapper.readValue(jsonStr, new TypeReference<List<GraphiteJsonDeserializeSample2>>() {/**/
+            });
 
-		return vos;
-	}
+            for (GraphiteJsonDeserializeSample2 avo : vos)
+                System.out.println(avo);
 
-	public static void main(String[] args) {
-		GraphiteJsonClient3 ins = new GraphiteJsonClient3();
-		String jsonStr = ins.getJsonDataFromWeb();
-		ins.deserializeJsonOutput(jsonStr);
-	}
+        } catch (JsonParseException e) {
+            e.printStackTrace();
+        } catch (JsonMappingException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return vos;
+    }
+
+    public static void main(String[] args) {
+        GraphiteJsonClient3 ins = new GraphiteJsonClient3();
+        String jsonStr = ins.getJsonDataFromWeb();
+        ins.deserializeJsonOutput(jsonStr);
+    }
 }
