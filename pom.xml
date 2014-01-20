@@ -89,4 +89,42 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
+	<build>
+		<plugins>
+			<plugin>
+				<!--using below cmd to start moco plugin server mvn com.garrettheel:moco-maven-plugin:run -->
+				<groupId>com.garrettheel</groupId>
+				<artifactId>moco-maven-plugin</artifactId>
+				<version>0.9</version>
+				<configuration>
+					<port>9090</port>
+					<configFile>src/main/resources/mocoConfig.json</configFile>
+				</configuration>
+                
+                <!--Running during the maven lifecycle-->
+				<executions>
+					<execution>
+						<id>start-moco</id>
+						<phase>pre-integration-test</phase>
+						<goals>
+							<goal>start</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>stop-moco</id>
+						<phase>post-integration-test</phase>
+						<goals>
+							<goal>stop</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+		<testResources>
+			<testResource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+			</testResource>
+		</testResources>
+	</build>
 </project>

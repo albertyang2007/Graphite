@@ -1,0 +1,1 @@
+[{"target": "system.loadavg.1min", "datapoints": [[89, 1389163650], [45, 1389163660]]}, {"target": "system.loadavg.15min", "datapoints": [[null, 1389163650], [null, 1389163660]]}]

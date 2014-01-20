@@ -30,6 +30,7 @@ import com.github.dreamhead.moco.Runnable;
  * using moco
  * refer to:http://www.blogbus.com/dreamhead-logs/225920824.html
  * https://github.com/dreamhead/moco
+ * https://github.com/GarrettHeel/moco-maven-plugin
  */
 public class GraphiteJsonClient3Test {
 	String json1 = "{\"target\": \"system.loadavg.1min\", \"datapoints\": [[89, 1389163650], [45, 1389163660]]}";
