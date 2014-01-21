@@ -1,11 +1,6 @@
 package org.albertyang2007.graphite.json;
 
-import static com.github.dreamhead.moco.Moco.by;
-import static com.github.dreamhead.moco.Moco.header;
 import static com.github.dreamhead.moco.Moco.httpserver;
-import static com.github.dreamhead.moco.Moco.pathResource;
-import static com.github.dreamhead.moco.Moco.uri;
-import static com.github.dreamhead.moco.Moco.with;
 import static com.github.dreamhead.moco.Runner.running;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
@@ -17,7 +12,6 @@ import java.util.List;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import org.albertyang2007.graphite.json.GraphiteJsonDeserializeSample2;
 import org.apache.cxf.jaxrs.client.WebClient;
 import org.apache.http.client.fluent.Content;
 import org.apache.http.client.fluent.Request;
@@ -61,9 +55,7 @@ public class GraphiteJsonClient3Test {
 	@Test
 	public void simple_test_using_cxf_client() throws Exception {
 		HttpServer server = httpserver(9090);
-		//server.response(json);
-		server.request(by(uri("/render?"))).response(with(pathResource("mocoConfig.json")),
-                header("Content-Type", MediaType.APPLICATION_JSON));
+		server.response(json);
 
 		running(server, new Runnable() {
 			public void run() throws IOException {

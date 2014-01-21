@@ -1,0 +1,17 @@
+{
+  "request" :
+    {
+      "method" : "get",
+      "uri" : "/render",
+      "queries" : {
+        "from" : "-30minutes",
+        "noCache" : "true",
+        "format" : "json",
+        "target" : "summarize(system.loadavg_1min,'30minute',sum,true)"
+      }
+    },
+  "response" :
+    {
+      "file" : "graphiteClientResponse.json"
+    }
+}
