@@ -2,7 +2,7 @@
   {
     "response" :
       {
-        "file" : "src/main/resources/graphiteClientResponse.txt"
+        "file" : "src/main/resources/graphiteClientResponse.json"
       }
   }
 ]

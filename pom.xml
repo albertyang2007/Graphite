@@ -88,6 +88,11 @@
 			<version>4.3</version>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-all</artifactId>
+			<version>1.9.5</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<plugins>
@@ -100,8 +105,8 @@
 					<port>9090</port>
 					<configFile>src/main/resources/mocoConfig.json</configFile>
 				</configuration>
-                
-                <!--Running during the maven lifecycle-->
+
+				<!--Running during the maven lifecycle -->
 				<executions>
 					<execution>
 						<id>start-moco</id>
