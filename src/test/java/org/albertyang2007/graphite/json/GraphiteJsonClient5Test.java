@@ -1,19 +1,13 @@
 package org.albertyang2007.graphite.json;
 
-import static com.github.dreamhead.moco.Moco.and;
-import static com.github.dreamhead.moco.Moco.by;
-import static com.github.dreamhead.moco.Moco.eq;
-import static com.github.dreamhead.moco.Moco.header;
-import static com.github.dreamhead.moco.Moco.httpserver;
-import static com.github.dreamhead.moco.Moco.method;
-import static com.github.dreamhead.moco.Moco.pathResource;
-import static com.github.dreamhead.moco.Moco.query;
-import static com.github.dreamhead.moco.Moco.uri;
-import static com.github.dreamhead.moco.Moco.with;
+import static com.github.dreamhead.moco.runner.JsonRunner.newJsonRunnerWithStreams;
+import static com.google.common.base.Optional.of;
+import static com.google.common.collect.Lists.newArrayList;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,41 +26,37 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import com.github.dreamhead.moco.HttpServer;
-import com.github.dreamhead.moco.internal.ActualHttpServer;
-import com.github.dreamhead.moco.internal.MocoHttpServer;
+import com.github.dreamhead.moco.runner.JsonRunner;
+import com.google.common.io.Resources;
 
 @RunWith(value = MockitoJUnitRunner.class)
-public class GraphiteJsonClient4Test {
-
-    String json1 = "{\"target\": \"system.loadavg.1min\", \"datapoints\": [[89, 1389163650], [45, 1389163660]]}";
-    String json2 = "{\"target\": \"system.loadavg.15min\", \"datapoints\": [[null, 1389163650], [null, 1389163660]]}";
-
-    String json = "[" + json1 + ", " + json2 + "]";
-
-    MocoHttpServer server;
+public class GraphiteJsonClient5Test {
+    private JsonRunner runner;
+    private int port = 9090;
 
     @Before
     public void setup() {
-        // start moco http server
-        HttpServer httpServer = httpserver(9090);
-
-        httpServer.request(
-                and(by(method("get")), by(uri("/render")),
-                        eq(query("target"), "summarize(system.loadavg_1min,'30minute',sum,true)"),
-                        eq(query("from"), "-30minutes"), eq(query("noCache"), "true"), eq(query("format"), "json")))
-                .response(with(pathResource("graphiteClientResponse.json")),
-                        header("Content-Type", MediaType.APPLICATION_JSON));
-
-        //httpServer.request(by(file("src/main/resources/graphiteClientRequest.json"))).response("haha");
-
-        server = new MocoHttpServer((ActualHttpServer) httpServer);
-        server.start();
+        runWithConfiguration("get_method.json");
     }
 
     @After
     public void tearDown() {
-        server.stop();
+        if (runner != null) {
+            runner.stop();
+        }
+    }
+
+    protected void runWithConfiguration(String... resourceNames) {
+        try {
+            List<InputStream> streams = newArrayList();
+            for (String resourceName : resourceNames) {
+                streams.add(Resources.getResource(resourceName).openStream());
+            }
+            runner = newJsonRunnerWithStreams(streams, of(port));
+            runner.run();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Test
@@ -108,5 +98,4 @@ public class GraphiteJsonClient4Test {
         assertThat(vos.get(0).getDatapoints().get(0).getValue(), is("89"));
         assertThat(vos.get(0).getDatapoints().get(0).getTimestamp(), is("1389163650"));
     }
-
 }

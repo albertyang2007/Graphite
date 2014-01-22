@@ -93,6 +93,13 @@
 			<artifactId>mockito-all</artifactId>
 			<version>1.9.5</version>
 		</dependency>
+		<dependency>
+			<groupId>com.garrettheel</groupId>
+			<artifactId>moco-maven-plugin</artifactId>
+			<version>0.9</version>
+			<type>maven-plugin</type>
+		</dependency>
+
 	</dependencies>
 	<build>
 		<plugins>
@@ -127,7 +134,7 @@
 		</plugins>
 		<testResources>
 			<testResource>
-				<directory>src/main/resources</directory>
+				<directory>src/test/resources</directory>
 				<filtering>true</filtering>
 			</testResource>
 		</testResources>
