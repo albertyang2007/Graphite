@@ -1,0 +1,2 @@
+[{"target": "summarize(system.loadavg.cpu.1min, \"5minute\", \"sum\", true)", "datapoints": [[50.0, 1390400160]]}, 
+{"target": "summarize(system.loadavg.cpu.5min, \"5minute\", \"sum\", true)", "datapoints": [[250.0, 1390400160]]}]

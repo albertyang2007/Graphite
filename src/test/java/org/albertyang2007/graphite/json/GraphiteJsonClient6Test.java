@@ -30,13 +30,13 @@ import com.github.dreamhead.moco.runner.JsonRunner;
 import com.google.common.io.Resources;
 
 @RunWith(value = MockitoJUnitRunner.class)
-public class GraphiteJsonClient5Test {
+public class GraphiteJsonClient6Test {
     private JsonRunner runner;
     private int port = 9090;
 
     @Before
     public void setup() {
-        runWithConfiguration("single_key_request.json");
+        runWithConfiguration("multip_key_request.json");
     }
 
     @After
@@ -74,7 +74,8 @@ public class GraphiteJsonClient5Test {
         WebClient client = WebClient.create(serverURL, providerList);
         client.accept(MediaType.APPLICATION_JSON).type(MediaType.APPLICATION_JSON).path("render")
                 .query("format", "json").query("noCache", "true").query("from", "-5minutes")
-                .query("target", "summarize(system.loadavg.cpu.1min,'5minutes','sum',true)");
+                .query("target", "summarize(system.loadavg.cpu.1min,'5minutes','sum',true)")
+                .query("target", "summarize(system.loadavg.cpu.5min,'5minutes','sum',true)");
 
         System.out.println(client.getCurrentURI());
         
@@ -94,6 +95,6 @@ public class GraphiteJsonClient5Test {
                 new TypeReference<List<GraphiteJsonDeserializeSample2>>() {/**/
                 });
 
-        assertThat(vos.size(), is(1));
+        assertThat(vos.size(), is(2));
     }
 }

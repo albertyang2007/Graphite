@@ -1,0 +1,19 @@
+[
+  {
+     "request" :
+       {
+        "method" : "get",
+        "uri" : "/render",
+        "queries" : {
+            "from" : "-5minutes",
+            "format" : "json",
+            "noCache" : "true",
+            "target" : "summarize(system.loadavg.cpu.*,'5minutes','sum',true)"
+         }
+       },
+     "response" :
+       {
+         "file" : "src/test/resources/asterisk_key_response.json"
+       }
+  }
+]
