@@ -1,4 +1,7 @@
-graphite_json_deserialize
+Graphite related project development.
 =========================
 
-Deserialize Graphite Json String to Object
+Graphite install and configuration.
+Graphite Web.
+Json Deserializer.
+
