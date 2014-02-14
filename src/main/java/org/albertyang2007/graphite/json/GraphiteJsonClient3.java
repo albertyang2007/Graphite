@@ -40,7 +40,7 @@ public class GraphiteJsonClient3 {
 
             providerList.add(provider);
 
-            String key = "ericsson.ece.exposure.sms.parlayx.{test,sendsms}.inbound";
+            String key = "system.loadavg_1min";
             String alias = key.hashCode() + "";
 
             WebClient client = WebClient.create(serverURL, providerList);
