@@ -28,7 +28,7 @@ public class GraphiteJsonClient3 {
     public String getJsonDataFromWeb() {
         String output = "[]";
         try {
-            String serverURL = "http://10.178.255.114:8080";
+            String serverURL = "http://192.168.1.131:8080";
             String path = "/render?from=-30minute&target=summarize(system.loadavg_1min,'30minute', 'sum', true)&format=json&noCache=true";
 
             final ObjectMapper objectMapper = new ObjectMapper();
